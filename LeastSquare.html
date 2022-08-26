@@ -1,0 +1,72 @@
+<p>最小二乘法是一种基本的线性回归方法，现总结其矩阵形式的推导。</p>
+<h5 id="优化目标">优化目标</h5>
+<p><span class="math inline">$\mathop{min}\limits_{\mathbf{x}}f(\mathbf{x})={||\mathbf{Ax-B||}_2^2}$</span></p>
+<h5 id="第一步-l2范式展开">第一步： l2范式展开</h5>
+<p><br /><span class="math display">$$
+\begin{aligned}
+f(\mathbf{x}) &amp;= \mathbf{{(Ax-B)^T(Ax-B)}} \\
+&amp;= {\mathbf{x^TA^TAx-B^TAx-x^TA^TB+B^TB}}  \\
+&amp;= {\mathbf{x^TA^TAx-2B^TAx+B^TB}}
+\end{aligned}
+$$</span><br /></p>
+<p>注意，这里中间两项由于结果都是标量且形式上互为转置，那么必然相等，因此合并为一项。</p>
+<h5 id="第二步求偏导得到最小值点">第二步：求偏导得到最小值点</h5>
+<p>首先列出要用到的对向量求偏导的公式： <br /><span class="math display">$$
+\begin{aligned}
+\frac{\partial{\mathbf{(c^T\beta)}}}{\partial{\mathbf{\beta}}} = 
+{\mathbf{c}}
+\end{aligned}
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+\begin{aligned}
+\frac{\partial{\mathbf{({\beta}^TV{\beta})}}}{\partial{\mathbf{\beta}}} &amp;= \mathbf{(V+V^T)\beta} \\
+&amp;= \mathbf{2V\beta}\quad\text{(V对称)}
+\end{aligned}
+$$</span><br /></p>
+<p>根据公式，可立即得到： <br /><span class="math display">$$
+\begin{aligned}
+\frac{\partial{f(\mathbf{x})}}{\partial{\mathbf{x}}} &amp;= \frac{\partial{\mathbf{(x^TA^TAx-2B^TAx+B^TB)}}}{\partial{\mathbf{x}}} \\
+&amp;= \mathbf{2A^TAx-2{(B^TA)}^T} \\
+&amp;= \mathbf{2A^TAx-2{A^TB}}
+\end{aligned}
+$$</span><br /> 令<span class="math inline">$\frac{\partial{f(\mathbf{x})}}{\partial{\mathbf{x}}}=0$</span>得到： <br /><span class="math display">$$
+\mathbf{2A^TAx-2{A^TB}} = 0 \\
+\mathbf{x} = \mathbf{{(A^TA)}^{-1}A^TB}
+$$</span><br /></p>
+<p>因此，当<span class="math inline"><strong>A</strong><sup><strong>T</strong></sup><strong>A</strong></span>的逆存在时，可以解得极值点<span class="math inline"><strong>x</strong></span></p>
+<p>易证明海森矩阵<span class="math inline">$\frac{\partial^2f(\mathbf{x})}{\partial{x}\partial{x}}$</span>为正定矩阵，因此<span class="math inline"><strong>x</strong></span>为极小值点。</p>
+<h5 id="举例">举例</h5>
+<p>假如观测点为(0, 6)、(1, 0)、(2, 0)，欲拟合形式为<span class="math inline"><em>y</em> = <em>x</em><sub>0</sub> + <em>x</em><sub>1</sub><em>t</em></span>的直线（变量为t，参数为<span class="math inline"><em>x</em><sub>0</sub>, <em>x</em><sub>1</sub></span>）</p>
+<p>那么<span class="math inline"><strong>A</strong></span>为 <br /><span class="math display">$$
+\left[
+\begin{matrix}
+1 &amp; 0 \\
+1 &amp; 1 \\
+1 &amp; 2
+\end{matrix}
+\right]
+$$</span><br /> <span class="math inline"><strong>x</strong></span>为 <br /><span class="math display">$$
+\left[
+\begin{matrix}
+x_0 \\
+x_1
+\end{matrix}
+\right]
+$$</span><br /> <span class="math inline"><strong>B</strong></span>为 <br /><span class="math display">$$
+\left[
+\begin{matrix}
+6 \\
+0 \\
+0
+\end{matrix}
+\right]
+$$</span><br /> 使用此结论代入求得 <br /><span class="math display">$$
+\begin{aligned}
+\mathbf{x} = \left[
+\begin{matrix}
+5 \\
+-3
+\end{matrix}
+\right]
+\end{aligned}
+$$</span><br /> 所以拟合直线为<span class="math inline"><em>y</em> = 5 +  − 3<em>t</em></span></p>
